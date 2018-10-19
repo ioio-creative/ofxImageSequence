@@ -135,6 +135,9 @@ class ofxImageSequence : public ofBaseHasTexture {
 	bool isLoading();						//returns true if loading during thread
 	void loadFrame(int imageIndex);			//allows you to load (cache) a frame to avoid a stutter when loading. use this to "read ahead" if you want
 	
+	// added by Chris	
+	void setIsClearPixelsAfterLoadingTexture(bool isClear);
+	
 	void setMinMagFilter(int minFilter, int magFilter);
 
 	//Do not call directly
@@ -165,6 +168,9 @@ class ofxImageSequence : public ofBaseHasTexture {
 	
 	int minFilter;
 	int magFilter;
+
+	// added by Chris
+	bool isClearPixelsAfterLoadingTexture;  
 };
 
 

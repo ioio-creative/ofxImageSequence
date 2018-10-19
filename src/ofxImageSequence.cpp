@@ -322,30 +322,40 @@ float ofxImageSequence::percentLoaded(){
 
 void ofxImageSequence::loadFrame(int imageIndex)
 {
-	if(lastFrameLoaded == imageIndex){
+	if (lastFrameLoaded == imageIndex) {
 		return;
 	}
 
-	if(imageIndex < 0 || imageIndex >= sequence.size()){
+	if (imageIndex < 0 || imageIndex >= sequence.size()) {
 		ofLogError("ofxImageSequence::loadFrame") << "Calling a frame out of bounds: " << imageIndex;
 		return;
 	}
 
-	if(!sequence[imageIndex].isAllocated() && !loadFailed[imageIndex]){
-		if(!ofLoadImage(sequence[imageIndex], filenames[imageIndex])){
+	if (!sequence[imageIndex].isAllocated() && !loadFailed[imageIndex]) {
+		if (!ofLoadImage(sequence[imageIndex], filenames[imageIndex])) {
 			loadFailed[imageIndex] = true;
 			ofLogError("ofxImageSequence::loadFrame") << "Image failed to load: " << filenames[imageIndex];
 		}
 	}
 
-	if(loadFailed[imageIndex]){
+	if (loadFailed[imageIndex]) {
 		return;
 	}
 
 	texture.loadData(sequence[imageIndex]);
 
-	lastFrameLoaded = imageIndex;
+	// added by Chris
+	if (isClearPixelsAfterLoadingTexture) {
+		sequence[imageIndex].clear();
+	}
 
+	lastFrameLoaded = imageIndex;
+}
+
+// added by Chris
+void ofxImageSequence::setIsClearPixelsAfterLoadingTexture(bool isClear)
+{
+	isClearPixelsAfterLoadingTexture = isClear;
 }
 
 float ofxImageSequence::getPercentAtFrameIndex(int index)
